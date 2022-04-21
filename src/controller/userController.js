@@ -1,6 +1,14 @@
-import jwt from 'jsonwebtoken'
+//import cloudinary
+import cloudinary from 'cloudinary';
 import User from '../model/userModel'
 require("dotenv").config();
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
+});
 
 //create user
 
@@ -48,3 +56,17 @@ exports.loginUser = async(req,res)=>{
          res.status(401).send()
      }
  }
+
+ exports.updateProfilePicture = async(req,res)=>{
+  try {
+        const file = req.files.picture;
+        const result = await cloudinary.v2.uploader.upload(file.tempFilePath);
+        const user = await User.findById(req.user._id);
+        user.profilePicture = result.secure_url;
+        await user.save();
+        res.send({message:"profile picture updated successfully"})
+  } catch (error) {
+      res.status(400).send(error.message)
+  }
+  }
+ 

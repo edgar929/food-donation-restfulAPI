@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import connectDb from './database/dbconnection';
 import cors from "cors";
 import routes from './routes/index';
+import fileUpload from "express-fileupload";
 
 const app = express();
 connectDb(); 
@@ -14,6 +15,9 @@ let corsOptions ={
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(fileUpload({
+  useTempFiles: true
+}));
 
 
 app.use('/api', routes);

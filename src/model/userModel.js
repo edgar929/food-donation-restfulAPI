@@ -39,7 +39,10 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
     required: true,
   },
-
+  profilePicture: {
+    type: String,
+    default: "https://res.cloudinary.com/dr4j1ymco/image/upload/v1650204803/dummy-pictures/avatar_i8dbaq.png",
+  },
   token: {
     type: String,
   },
